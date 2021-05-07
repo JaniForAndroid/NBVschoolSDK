@@ -1,0 +1,3 @@
+//include ':wangxiao'
+include ':app'
+rootProject.name = "Vschool SDK"

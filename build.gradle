@@ -1,0 +1,104 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url "https://dl.google.com/dl/android/maven2/" }
+        google()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.1"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+        jcenter { url "http://jcenter.bintray.com/"}
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url "http://maven.aliyun.com/nexus/content/repositories/releases/" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://dl.google.com/dl/android/maven2/" }
+        maven { url "https://dl.google.com/dl/android/maven2/" }
+        google()
+        maven {
+            credentials {
+                username '607e372e6d822d6b01092fed'
+                password 'ezzVoP09yV7s'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2097319-release-oQ55Ix/'
+        }
+    }
+}
+
+ext {
+    compileSdkVersion = 28
+    buildToolsVersion = '29.0.2'
+    sdkVersion = 26
+    minSdkVersion = 21
+    wangxiaosdk_version = '1.0'
+
+    material = 'com.google.android.material:material:1.1.0'
+    recyclerview = 'androidx.recyclerview:recyclerview:1.1.0'
+    appcompat_v7 = 'androidx.appcompat:appcompat:1.0.0'
+    support_v4 = 'androidx.legacy:legacy-support-v4:1.0.0'
+    support_constraint = 'androidx.constraintlayout:constraintlayout:1.1.3'
+    logger = "com.orhanobut:logger:2.2.0"//日志
+    gson = 'com.google.code.gson:gson:2.7'//数据转换
+    okhttp = 'com.squareup.okhttp3:okhttp:3.10.0'//网络请求
+    retrofit = 'com.squareup.retrofit2:retrofit:2.3.0'//网络请求
+    converter_gson = 'com.squareup.retrofit2:converter-gson:2.3.0'//网络请求
+    adapter_rxjava = 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    rxjava = 'io.reactivex.rxjava2:rxjava:2.1.2'
+    rxbinding = 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+    eventbus = 'org.greenrobot:eventbus:3.0.0'
+    wsmanager = "com.rabtman.wsmanager:wsmanager:1.0.2"
+    lottie = "com.airbnb.android:lottie:2.7.0"
+    danmu = 'com.github.ctiao:DanmakuFlameMaster:0.9.21'
+    danmundk = 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
+    glide = "com.github.bumptech.glide:glide:4.11.0"
+    glide_annotation = "com.github.bumptech.glide:compiler:4.11.0"
+    glide_transformations = "jp.wasabeef:glide-transformations:4.2.0"
+    oss = 'com.aliyun.dpa:oss-android-sdk:2.2.0'
+    rxandroid = 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    rxpermissions = 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    exoplayer_core = "com.google.android.exoplayer:exoplayer-core:r2.5.4"
+    exoplayer_dash = "com.google.android.exoplayer:exoplayer-ui:r2.5.4"
+    exoplayer_hls = "com.google.android.exoplayer:exoplayer-hls:r2.5.4"
+    exoplayer_ui = "com.google.android.exoplayer:exoplayer-dash:r2.5.4"
+    exoplayer_okhttp = "com.google.android.exoplayer:extension-okhttp:r2.5.4"
+    transition_anywhere = "com.andkulikov:transitionseverywhere:2.1.0"
+    commons_codec = 'commons-codec:commons-codec:1.15'
+
+    nice_dialog = 'com.github.Othershe:NiceDialog:1.1.4'
+    dynamic_animation = 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+    voiceline = "com.carlos.voiceline:mylibrary:1.0.6"
+    discrete_scrollview = 'com.yarolegovich:discrete-scrollview:1.4.7'
+    android_job = "com.evernote:android-job:1.2.5"
+    zip4j = 'net.lingala.zip4j:zip4j:1.3.2'
+    netInfo = "fairy.easy:httpmodel:1.0.5"
+    smart_refresh_layout = 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
+    smart_refresh_header = 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.3'
+    gif_drawable = 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
+    joor = "org.jooq:joor:0.9.5"
+    photoview = 'com.commit451:PhotoView:1.2.4'
+    scalable_videoview = 'com.yqritc:android-scalablevideoview:1.0.4'
+    rv_animators = 'jp.wasabeef:recyclerview-animators:2.3.0'
+    my_little_canvas = 'com.github.florent37:mylittlecanvas:1.0.1'
+    flyco_tab_layout = 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    aliyun_httpdns = 'com.aliyun.ams:alicloud-android-httpdns:1.1.7'
+    aliyun_utils = 'com.aliyun.ams:alicloud-android-utils:1.1.3'
+    aliyun_ut = 'com.aliyun.ams:alicloud-android-ut:5.1.0'
+    aliyun_beacon = 'com.aliyun.ams:alicloud-android-beacon:1.0.1'
+    flow_layout = 'com.hyman:flowlayout-lib:1.1.2'
+    base_rv_adapter = 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
