@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
     model.setApp_code("418558986");
     String phone = et_phone.getText() == null ? "" : et_phone.getText().toString();
     if (TextUtils.isEmpty(phone)) {
-//      phone = "16602115970";
-      phone = "13205510010";
+      phone = "16602115970";
+//      phone = "13205510010";
     }
     model.setPhone_enc(Base64.encodeToString(phone.getBytes(), Base64.NO_WRAP));
     if (TextUtils.isEmpty(token)) {
