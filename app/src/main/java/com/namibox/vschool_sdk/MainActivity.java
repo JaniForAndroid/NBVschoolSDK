@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
   private String tokenAppCode;
   private String tokenPwd;
   private String tokenPhone;
+  private String time;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     et_token_phone = findViewById(R.id.et_token_phone);
     et_token_pwd = findViewById(R.id.et_token_pwd);
     et_token_code = findViewById(R.id.et_token_code);
-
     initRv();
     initSpinnner();
   }
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
               Toast.makeText(mContext, "请先选择课程", Toast.LENGTH_SHORT).show();
               return;
             }
-            new NamiboxSDK().enterClass(MainActivity.this, Long.parseLong(scheduleId),"2021-04-25", R.mipmap.ic_launcher,true,
+            new NamiboxSDK().enterClass(MainActivity.this, Long.parseLong(scheduleId),time, R.mipmap.ic_launcher,true,
                 new NBResultCallback() {
                   @Override
                   public void onBefore() {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
               Toast.makeText(mContext, "请先选择课程", Toast.LENGTH_SHORT).show();
               return;
             }
-            new NamiboxSDK().enterClass(MainActivity.this, Long.parseLong(scheduleId), "2021-04-25",R.mipmap.ic_launcher, null);
+            new NamiboxSDK().enterClass(MainActivity.this, Long.parseLong(scheduleId), time,R.mipmap.ic_launcher, null);
           } else if ("other:上传纳米盒日志".equals(o)) {
             new NamiboxSDK().uploadLog(MainActivity.this);
           }
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     EditText et_date = findViewById(R.id.et_date);
-    String time =  getGMT8DawnString(new Date());
+    time = getGMT8DawnString(new Date());
     if (!TextUtils.isEmpty(et_date.getText())) {
       time = convertGMT8String(et_date.getText().toString());
     }
