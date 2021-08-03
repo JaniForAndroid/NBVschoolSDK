@@ -56,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
   private ArrayAdapter<String> adapter;
   private String token;
   private Spinner spinner;
+  private EditText et_token_phone;
+  private EditText et_token_pwd;
+  private EditText et_token_code;
+  private String tokenAppCode;
+  private String tokenPwd;
+  private String tokenPhone;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    et_token_phone = findViewById(R.id.et_token_phone);
+    et_token_pwd = findViewById(R.id.et_token_pwd);
+    et_token_code = findViewById(R.id.et_token_code);
+
     initRv();
     initSpinnner();
   }
@@ -157,11 +168,13 @@ public class MainActivity extends AppCompatActivity {
   private void NBLogin() {
     EditText et_phone = findViewById(R.id.et_phone);
     NamiboxLoginModel model = new NamiboxLoginModel();
-    model.setApp_code("418558986");
+    if (TextUtils.isEmpty(tokenAppCode)) {
+      tokenAppCode = "427542539";
+    }
+    model.setApp_code(tokenAppCode);
     String phone = et_phone.getText() == null ? "" : et_phone.getText().toString();
     if (TextUtils.isEmpty(phone)) {
-      phone = "16602115970";
-//      phone = "13205510010";
+      phone = "16601000001";
     }
     model.setPhone_enc(Base64.encodeToString(phone.getBytes(), Base64.NO_WRAP));
     if (TextUtils.isEmpty(token)) {
@@ -184,11 +197,27 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void getToken() {
+    if (!TextUtils.isEmpty(et_token_phone.getText())) {
+      tokenPhone = et_token_phone.getText().toString();
+    } else {
+      tokenPhone = "16602115910";
+    }
+    if (!TextUtils.isEmpty(et_token_pwd.getText())) {
+      tokenPwd = et_token_pwd.getText().toString();
+    } else {
+      tokenPwd = "123456";
+    }
+    if (!TextUtils.isEmpty(et_token_code.getText())) {
+      tokenAppCode = et_token_code.getText().toString();
+    } else {
+      tokenAppCode = "427542539";
+    }
+
     String url = "https://mcloudw.namibox.com/partner/login/";
     JsonObject param = new JsonObject();
     param.addProperty("login_type", "normal_login");
-    param.addProperty("username", "16602115911");
-    param.addProperty("password", "123456");
+    param.addProperty("username", tokenPhone);
+    param.addProperty("password", tokenPwd);
 
     ApiHandler.getBaseApi().commonJsonObjectPost(url, param)
         .flatMap((Function<JsonObject, ObservableSource<JsonObject>>) jsonObject -> {
@@ -198,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
             String sessionId = jsonObject.get("data").getAsJsonObject().get("session_id").getAsString();
             String cookie = "sessionid="+sessionId+"; Domain=.namibox.com; Path=/";
             syncCookie("https://mcloudw.namibox.com", cookie);
-            String tokenUrl = "https://mcloudw.namibox.com/auth/test-get-access-token?app_code=418558986";
+            String tokenUrl = "https://mcloudw.namibox.com/auth/test-get-access-token?app_code="+tokenAppCode;
             return ApiHandler.getBaseApi().commonJsonObjectPost(tokenUrl, new JsonObject());
           } else {
             return Observable.empty();
@@ -213,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "token>>>>>>" + token);
             Toast.makeText(MainActivity.this, "获取token成功", Toast.LENGTH_SHORT).show();
           } else {
-            Log.e("MainActivity", "获取token出错:" + jsonObject);
+            Log.e("MainActivity", "获取token出错:" + jsonObject.toString());
             Toast.makeText(MainActivity.this, "获取token出错", Toast.LENGTH_SHORT).show();
           }
         }, throwable -> {
@@ -274,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                 VsCacheEntity schedule = gson.fromJson(scheduleJson, VsCacheEntity.class);
                 schedule.date = date;
 //                if (isTodaySchedule(schedule)) {
-                  scheduleList.add(schedule);
+                scheduleList.add(schedule);
 //                }
               }
             }

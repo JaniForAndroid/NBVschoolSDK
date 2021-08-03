@@ -7,13 +7,43 @@
 
 
   <EditText
-    android:id="@+id/et_phone"
+    android:id="@+id/et_token_phone"
     android:layout_width="0dp"
     android:layout_height="50dp"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    android:hint="请输入登录的手机号，默认为16602115970"
+    android:hint="请输入获取token的手机号，默认为16602115910"
+    />
+
+  <EditText
+    android:id="@+id/et_token_pwd"
+    android:layout_width="0dp"
+    android:layout_height="50dp"
+    app:layout_constraintTop_toBottomOf="@id/et_token_phone"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:hint="请输入获取token的密码，默认为123456"
+    />
+
+  <EditText
+    android:id="@+id/et_token_code"
+    android:layout_width="0dp"
+    android:layout_height="50dp"
+    app:layout_constraintTop_toBottomOf="@id/et_token_pwd"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:hint="请输入获取token的AppCode，默认为427542539"
+    />
+
+  <EditText
+    android:id="@+id/et_phone"
+    android:layout_width="0dp"
+    android:layout_height="50dp"
+    app:layout_constraintTop_toBottomOf="@id/et_token_code"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:hint="请输入登录的手机号，默认为16601000001"
     />
 
   <EditText
