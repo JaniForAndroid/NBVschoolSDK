@@ -3,6 +3,7 @@ package com.namibox.vschool_sdk;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,9 @@ public class SdkApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    NamiboxSDK.init(this,BuildConfig.DEBUG);
+    boolean s = BuildConfig.DEBUG
+        && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("is_debug", true);
+    NamiboxSDK.init(this,s);
     initExceptionHandler();
     registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
       @Override

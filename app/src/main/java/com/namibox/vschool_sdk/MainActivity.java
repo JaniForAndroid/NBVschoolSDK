@@ -3,6 +3,7 @@ package com.namibox.vschool_sdk;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -11,8 +12,11 @@ import android.webkit.CookieManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +41,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
   private String tokenPwd;
   private String tokenPhone;
   private String time;
+  private boolean is_debug;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,27 @@ public class MainActivity extends AppCompatActivity {
     et_token_phone = findViewById(R.id.et_token_phone);
     et_token_pwd = findViewById(R.id.et_token_pwd);
     et_token_code = findViewById(R.id.et_token_code);
+    Switch aSwitch = findViewById(R.id.switcher);
+    is_debug = BuildConfig.DEBUG
+        && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("is_debug", true);
+    aSwitch.setChecked(!is_debug);
+    aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+          //正式环境
+          PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+              .edit().putBoolean("is_debug", false).apply();
+        } else {
+          //测试环境
+          PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+              .edit().putBoolean("is_debug", true).apply();
+        }
+
+        DialogUtil.showButtonDialog2(MainActivity.this, "提示", "切换环境后请重启APP", "确定",
+            v -> System.exit(0), "",null,"",null,null);
+      }
+    });
     initRv();
     initSpinnner();
   }
@@ -213,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
       tokenAppCode = "427542539";
     }
 
-    String url = "https://mcloudw.namibox.com/partner/login/";
+    String url = getCloudBaseUrl()+"partner/login/";
     JsonObject param = new JsonObject();
     param.addProperty("login_type", "normal_login");
     param.addProperty("username", tokenPhone);
@@ -226,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
           if (TextUtils.equals(retcode, "success")) {
             String sessionId = jsonObject.get("data").getAsJsonObject().get("session_id").getAsString();
             String cookie = "sessionid="+sessionId+"; Domain=.namibox.com; Path=/";
-            syncCookie("https://mcloudw.namibox.com", cookie);
-            String tokenUrl = "https://mcloudw.namibox.com/auth/test-get-access-token?app_code="+tokenAppCode;
+            syncCookie(getCloudBaseUrl(), cookie);
+            String tokenUrl = getCloudBaseUrl()+"auth/test-get-access-token?app_code="+tokenAppCode;
             return ApiHandler.getBaseApi().commonJsonObjectPost(tokenUrl, new JsonObject());
           } else {
             return Observable.empty();
@@ -278,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
     DialogUtil.showProgress(this, "正在获取课程数据...");
     String url = String.format(Locale.US,
-        "https://wweb.namibox.com/btob/vschool_class/student_class_schedule?user_id=%s&start_at=%s&days=%d",
+        getBaseHttpsUrl()+"/btob/vschool_class/student_class_schedule?user_id=%s&start_at=%s&days=%d",
         user_id, time, 30);
     ApiHandler.getBaseApi().commonJsonGet(url)
         .subscribeOn(Schedulers.io())
@@ -392,5 +417,18 @@ public class MainActivity extends AppCompatActivity {
     calendar.set(Calendar.MINUTE, 0);
     calendar.set(Calendar.SECOND, 0);
     return calendar.getTimeInMillis() / 1000 * 1000;
+  }
+
+  public  String getCloudBaseUrl() {
+    String env = is_debug ? "mcloudw.namibox.com" : "mcloud.namibox.com";
+    return  String.format(Locale.US, "https://%s/", env);
+  }
+
+  public String getBaseHttpsUrl() {
+    if (is_debug) {
+      return "https://wweb.namibox.com";
+    } else {
+      return "https://namibox.com";
+    }
   }
 }
